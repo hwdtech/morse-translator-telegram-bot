@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/hwdtech/morse-translator-telegram-bot/issues"
   },
-  "homepage": "https://github.com/hwdtech/morse-translator-telegram-bot#readme"
+  "homepage": "https://github.com/hwdtech/morse-translator-telegram-bot#readme",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.27.1"
+  }
 }
