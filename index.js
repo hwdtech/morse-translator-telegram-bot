@@ -1,13 +1,9 @@
-const Telegraf = require('telegraf');
+const { mount } = require('micro-bot');
 
-const bot = new Telegraf(process.env.BOT_TOKEN);
-
-bot.on('inline_query', ({ inlineQuery, answerInlineQuery }) => {
+module.exports = mount('inline_query', ({ inlineQuery, answerInlineQuery }) => {
   const { query } = inlineQuery;
   const result = [{
     message_test: query.toUpperCase()
   }];
   return answerInlineQuery(result);
 });
-
-bot.startPolling();
