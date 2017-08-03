@@ -1,5 +1,5 @@
 const { Composer } = require('micro-bot');
-const morse = require('morse');
+const morse = require('xmorse');
 const app = new Composer();
 
 app.on('text', ({ reply, message }, next) => {
