@@ -1,9 +1,8 @@
-const { mount } = require('micro-bot');
+const { Composer } = require('micro-bot');
+const app = new Composer();
 
-module.exports = mount('inline_query', ({ inlineQuery, answerInlineQuery }) => {
-  const { query } = inlineQuery;
-  const result = [{
-    message_test: query.toUpperCase()
-  }];
-  return answerInlineQuery(result);
-});
+app.command('/start', ({ reply }) => reply('Welcome!'));
+app.hears('hi', ({ reply }) => reply('Hey there!'));
+app.on('sticker', ({ reply }) => reply('👍'));
+
+module.exports = app;
