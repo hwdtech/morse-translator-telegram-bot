@@ -9,12 +9,8 @@ const { BOT_TOKEN, BOT_DOMAIN, PORT } = process.env;
 const app = new Telegraf(BOT_TOKEN);
 const webHookPath = `/tb${uuid()}`;
 
-app.on('text', ({ replyWithAudio, message }) => {
-  console.log(`Reply with audio: ${BOT_DOMAIN}/morsify?message=${qs.escape(message.text)}`)
-
-  return replyWithAudio({
-    audio: `${BOT_DOMAIN}/morsify?message=${qs.escape(message.text)}`
-  });
+app.on('text', ({ reply, message }) => {
+  return reply(`${BOT_DOMAIN}/morsify?message=${qs.escape(message.text)}`);
 });
 
 app.telegram.getMe()
