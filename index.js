@@ -1,3 +1,4 @@
+const qs = require('querystring');
 const Telegraf = require('telegraf');
 const express = require('express');
 const uuid = require('uuid');
@@ -9,11 +10,10 @@ const app = new Telegraf(BOT_TOKEN);
 const webHookPath = `/tb${uuid()}`;
 
 app.on('text', ({ replyWithAudio, message }) => {
-  console.log(`Incomming message: ${message.text}`);
+  console.log(`Reply with audio: ${BOT_DOMAIN}/morsify?message=${qs.escape(message.text)}`)
+
   return replyWithAudio({
-    audio: `${BOT_DOMAIN}/morsify?message=${message.text}`,
-    title: 'Morse, bitch!',
-    reply_to_message_id: message.id
+    audio: `${BOT_DOMAIN}/morsify?message=${qs.escape(message.text)}`
   });
 });
 
