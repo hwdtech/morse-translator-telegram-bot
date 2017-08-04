@@ -21,7 +21,7 @@ app.telegram.getMe()
   .catch(err => console.error(err));
 
 const server = express();
-const webHookPath = `/tb${uuid()}`;
+const webHookPath = `/telegraf/micro-bot/vlf1of5wif`;
 server.use(app.webhookCallback(webHookPath));
 
 server.get('/morsify', morseController);
