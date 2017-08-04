@@ -6,7 +6,7 @@ const audioBufferUtils = require('audio-buffer-utils');
 
 const OSCILLATOR_FREQUENCY = 500;
 const DOT_DURATION = 0.1625;
-const SAMPLE_RATE = 44100;
+const SAMPLE_RATE = 8000;
 
 function createAudioBuffer(duration, frequency) {
   const audioBuffer = audioBufferUtils.create(SAMPLE_RATE * duration, 1, SAMPLE_RATE);
