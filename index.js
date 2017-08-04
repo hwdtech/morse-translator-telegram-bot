@@ -11,8 +11,7 @@ app.on('text', ({ replyWithAudio, message }) => {
   console.log(`Incomming message: ${message.text}`);
   return replyWithAudio({
     audio: `${BOT_DOMAIN}/morsify?message=${message.text}`,
-    caption: message.slice(0, 200),
-    title: message.slice(0, 10),
+    title: 'Morse, bitch!',
     reply_to_message_id: message.id
   });
 });
