@@ -16,15 +16,15 @@ app.on('text', ({ reply, message }) => {
 app.telegram.getMe()
   .then(info => {
     console.log(`Server has initialized bot nickname. Nick: ${info.username}`);
-    return app.telegram.setWebhook(`${BOT_DOMAIN}${webHookPath}`);
+
+    const server = express();
+    server.use(app.webhookCallback(webHookPath));
+
+    server.get('/morsify', morseController);
+
+    server.listen(PORT, () => {
+      console.log(`Webhook mounted at ${BOT_DOMAIN}${webHookPath}`);
+      app.telegram.setWebhook(`${BOT_DOMAIN}${webHookPath}`);
+    });
   })
   .catch(err => console.error(err));
-
-const server = express();
-server.use(app.webhookCallback(webHookPath));
-
-server.get('/morsify', morseController);
-
-server.listen(PORT, () => {
-  console.log(`Webhook mounted at ${BOT_DOMAIN}${webHookPath}`);
-});
