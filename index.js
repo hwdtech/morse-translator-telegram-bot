@@ -18,6 +18,7 @@ app.on('text', ({ replyWithAudio, message }) => {
 });
 
 app.on('inline_query', ({ inlineQuery, answerInlineQuery }) => {
+  console.log(`Answer with ${getUrl(inlineQuery.query)}`);
   return answerInlineQuery([{
     type: 'audio',
     title: 'Post this!',
