@@ -4,8 +4,8 @@ const lame = require('lame');
 const Through = require('audio-through');
 const audioBufferUtils = require('audio-buffer-utils');
 
-const OSCILLATOR_FREQUENCY = 500;
-const DOT_DURATION = 0.1625;
+const OSCILLATOR_FREQUENCY = 100;
+const DOT_DURATION = 0.875;
 const SAMPLE_RATE = 8000;
 
 function createAudioBuffer(duration, frequency) {
