@@ -4,9 +4,9 @@ const lame = require('lame');
 const Through = require('audio-through');
 const audioBufferUtils = require('audio-buffer-utils');
 
-const OSCILLATOR_FREQUENCY = 100;
-const DOT_DURATION = 0.875;
-const SAMPLE_RATE = 8000;
+const OSCILLATOR_FREQUENCY = 400;
+const DOT_DURATION = 0.1625;
+const SAMPLE_RATE = 44100;
 
 function createAudioBuffer(duration, frequency) {
   const audioBuffer = audioBufferUtils.create(SAMPLE_RATE * duration, 1, SAMPLE_RATE);
@@ -25,7 +25,7 @@ const createAudioBufferFormCharacter = _.cond([
 function createMorseAudioStream(encodedMessage = '') {
   const audioBuffers = [];
   const through = new Through();
-  const outStream = new lame.Encoder();
+  const outStream = new lame.Encoder({ bitRate: 32 });
 
   encodedMessage.split('').forEach((ch) => {
     audioBuffers.push(createAudioBufferFormCharacter(ch));
