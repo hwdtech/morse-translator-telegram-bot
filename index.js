@@ -21,6 +21,7 @@ app.on('inline_query', ({ inlineQuery, answerInlineQuery }) => {
   console.log(`Answer with ${getUrl(inlineQuery.query)}`);
   return answerInlineQuery([{
     type: 'audio',
+    id: uuid(),
     title: 'Post this!',
     audio_url: getUrl(inlineQuery.query)
   }]);
