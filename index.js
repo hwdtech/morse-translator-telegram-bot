@@ -22,7 +22,7 @@ app.on('inline_query', ({ inlineQuery, answerInlineQuery }) => {
   return answerInlineQuery([{
     type: 'audio',
     id: uuid(),
-    title: 'Post this!',
+    title: inlineQuery.query,
     audio_url: getUrl(inlineQuery.query)
   }]);
 });
