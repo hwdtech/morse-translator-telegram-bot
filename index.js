@@ -8,6 +8,7 @@ const { BOT_TOKEN, BOT_DOMAIN, PORT } = process.env;
 const app = new Telegraf(BOT_TOKEN);
 
 app.on('text', ({ replyWithAudio, message }) => {
+  console.log(`Message received: ${message.text}`);
   return replyWithAudio({
     audio: `${BOT_DOMAIN}/?message=${message.text}`,
     caption: message.slice(0, 200),
