@@ -1,12 +1,15 @@
-const url = require('url');
 const morse = require('morsify');
 const createMorseAudioStream = require('./createMorseAudioStream');
 
 module.exports = (req, res) => {
-  const query = url.parse(req.url, true).query;
-  const encodedMessage = morse.encode(query.message);
+  const { message } = req.query.message;
+
+  if (!message) {
+    return res.sendStatus(404);
+  }
+
+  const encodedMessage = morse.encode(message);
 
   res.setHeader('Content-Type', 'audio/mpeg');
-
   createMorseAudioStream(encodedMessage).pipe(res);
 };
