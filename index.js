@@ -17,16 +17,20 @@ app.on('text', ({ replyWithAudio, message }) => {
 });
 
 app.telegram.getMe()
-  .then(info => console.log(`Server has initialized bot nickname. Nick: ${info.username}`))
+  .then(info => {
+    console.log(`Server has initialized bot nickname. Nick: ${info.username}`);
+    return app.telegram.deleteWebhook();
+  })
+  .then(() => {
+    const server = express();
+    const webHookPath = `/tb${uuid()}`;
+    server.use(app.webhookCallback(webHookPath));
+
+    server.get('/morsify', morseController);
+
+    server.listen(PORT, () => {
+      console.log(`Bot server started at: ${BOT_DOMAIN}`);
+      console.log(`Webhook mounted at ${webHookPath}`);
+    });
+  })
   .catch(err => console.error(err));
-
-const server = express();
-const webHookPath = `/telegraf/micro-bot/vlf1of5wif`;
-server.use(app.webhookCallback(webHookPath));
-
-server.get('/morsify', morseController);
-
-server.listen(PORT, () => {
-  console.log(`Bot server started at: ${BOT_DOMAIN}`);
-  console.log(`Webhook mounted at ${webHookPath}`);
-});
