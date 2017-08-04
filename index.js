@@ -6,6 +6,7 @@ const morseController = require('./createMorseAudioStreamMiddleware');
 const { BOT_TOKEN, BOT_DOMAIN, PORT } = process.env;
 
 const app = new Telegraf(BOT_TOKEN);
+const webHookPath = `/tb${uuid()}`;
 
 app.on('text', ({ replyWithAudio, message }) => {
   console.log(`Incomming message: ${message.text}`);
@@ -19,18 +20,15 @@ app.on('text', ({ replyWithAudio, message }) => {
 app.telegram.getMe()
   .then(info => {
     console.log(`Server has initialized bot nickname. Nick: ${info.username}`);
-    return app.telegram.deleteWebhook();
-  })
-  .then(() => {
-    const server = express();
-    const webHookPath = `/tb${uuid()}`;
-    server.use(app.webhookCallback(webHookPath));
-
-    server.get('/morsify', morseController);
-
-    server.listen(PORT, () => {
-      console.log(`Bot server started at: ${BOT_DOMAIN}`);
-      console.log(`Webhook mounted at ${webHookPath}`);
-    });
+    return app.telegram.setWebhook(`${BOT_DOMAIN}${webHookPath}`);
   })
   .catch(err => console.error(err));
+
+const server = express();
+server.use(app.webhookCallback(webHookPath));
+
+server.get('/morsify', morseController);
+
+server.listen(PORT, () => {
+  console.log(`Webhook mounted at ${BOT_DOMAIN}${webHookPath}`);
+});
