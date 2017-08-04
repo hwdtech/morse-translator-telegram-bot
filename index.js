@@ -10,7 +10,7 @@ const app = new Telegraf(BOT_TOKEN);
 const webHookPath = `/tb${uuid()}`;
 
 function getUrl(text) {
-  `${BOT_DOMAIN}/morsify?message=${qs.escape(text)}`
+  return `${BOT_DOMAIN}/morsify?message=${qs.escape(text)}`;
 }
 
 app.on('text', ({ replyWithAudio, message }) => {
