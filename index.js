@@ -9,8 +9,20 @@ const { BOT_TOKEN, BOT_DOMAIN, PORT } = process.env;
 const app = new Telegraf(BOT_TOKEN);
 const webHookPath = `/tb${uuid()}`;
 
+function getUrl(text) {
+  `${BOT_DOMAIN}/morsify?message=${qs.escape(text)}`
+}
+
 app.on('text', ({ replyWithAudio, message }) => {
-  return replyWithAudio(`${BOT_DOMAIN}/morsify?message=${qs.escape(message.text)}`);
+  return replyWithAudio(getUrl(message.text));
+});
+
+app.on('inline_query', ({ inlineQuery, answerInlineQuery }) => {
+  return answerInlineQuery([{
+    type: 'audio',
+    title: 'Post this!',
+    audio_url: getUrl(inlineQuery.query)
+  }]);
 });
 
 app.telegram.getMe()
