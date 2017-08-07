@@ -28,6 +28,7 @@ module.exports = {
     const text = qs.unescape(message);
 
     const oggEncoder = new ogg.Encoder();
+    res.setHeader('Content-Type', 'audio/ogg');
     pump(oggEncoder, res);
 
     pump(
@@ -45,6 +46,8 @@ module.exports = {
     }
 
     const text = qs.unescape(message);
+
+    res.setHeader('Content-Type', 'audio/mpeg');
 
     pump(
       createAudioStream(text),
