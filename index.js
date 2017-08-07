@@ -9,10 +9,12 @@ const app = new Telegraf(BOT_TOKEN);
 const webHookPath = `/tb${uuid()}`;
 
 function getAudioUrl(message) {
+  console.log('Replying with audio:', `${BOT_DOMAIN}/${audioController.mp3Url(message)}`);
   return `${BOT_DOMAIN}/${audioController.mp3Url(message)}`;
 }
 
 function getVoiceUrl(message) {
+  console.log('Replying with voice:', `${BOT_DOMAIN}/${audioController.oggUrl(message)}`);
   return `${BOT_DOMAIN}/${audioController.oggUrl(message)}`;
 }
 
