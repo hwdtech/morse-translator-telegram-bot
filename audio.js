@@ -19,7 +19,7 @@ function createAudioStream(text) {
 
 module.exports = {
   ogg(req, res) {
-    const { message } = req.param;
+    const { message } = req.params;
 
     if (!message) {
       return res.sendStatus(404);
@@ -38,7 +38,7 @@ module.exports = {
   },
 
   mp3(req, res) {
-    const { message } = req.param;
+    const { message } = req.params;
 
     if (!message) {
       return res.sendStatus(404);
