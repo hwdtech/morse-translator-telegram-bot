@@ -1,29 +1,31 @@
-const qs = require('querystring');
 const Telegraf = require('telegraf');
 const express = require('express');
 const uuid = require('uuid');
-const morseController = require('./createMorseAudioStreamMiddleware');
+const audioController = require('./audio');
 
 const { BOT_TOKEN, BOT_DOMAIN, PORT } = process.env;
 
 const app = new Telegraf(BOT_TOKEN);
 const webHookPath = `/tb${uuid()}`;
 
-function getUrl(text) {
-  return `${BOT_DOMAIN}/morsify?message=${qs.escape(text)}`;
+function getAudioUrl(message) {
+  return `${BOT_DOMAIN}/${audioController.mp3Url(message)}`;
 }
 
-app.on('text', ({ replyWithAudio, message }) => {
-  return replyWithAudio(getUrl(message.text));
+function getVoiceUrl(message) {
+  return `${BOT_DOMAIN}/${audioController.oggUrl(message)}`;
+}
+
+app.on('text', ({ replyWithVoice, message }) => {
+  return replyWithVoice(getVoiceUrl(message.text));
 });
 
 app.on('inline_query', ({ inlineQuery, answerInlineQuery }) => {
-  console.log(`Answer with ${getUrl(inlineQuery.query)}`);
   return answerInlineQuery([{
     type: 'audio',
     id: uuid(),
     title: inlineQuery.query,
-    audio_url: getUrl(inlineQuery.query)
+    audio_url: getAudioUrl(inlineQuery.query)
   }]);
 });
 
@@ -34,7 +36,8 @@ app.telegram.getMe()
     const server = express();
     server.use(app.webhookCallback(webHookPath));
 
-    server.get('/morsify', morseController);
+    server.get('/:message.mp3', audioController.mp3);
+    server.get('/:message.ogg', audioController.ogg);
 
     server.listen(PORT, () => {
       console.log(`Webhook mounted at ${BOT_DOMAIN}${webHookPath}`);
