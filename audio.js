@@ -58,10 +58,10 @@ module.exports = {
   },
 
   mp3Url(message) {
-    return `${qs.encode(message)}.mp3`
+    return `${qs.escape(message)}.mp3`
   },
 
   oggUrl(message) {
-    return `${qs.encode(message)}.ogg`
+    return `${qs.escape(message)}.ogg`
   }
 };
