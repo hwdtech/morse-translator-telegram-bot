@@ -5,17 +5,8 @@ const {
   AudioEncoder
 } = require('morsea');
 const pump = require('pump');
-const lame = require('lame');
 const ogg = require('ogg');
 const opus = require('node-opus');
-
-function createAudioStream(text) {
-  return pump(
-    CharStream.create(text),
-    TextEncoder.create(),
-    AudioEncoder.create()
-  );
-}
 
 module.exports = {
   ogg(req, res) {
@@ -32,36 +23,19 @@ module.exports = {
     pump(oggEncoder, res);
 
     pump(
-      createAudioStream(text),
-      new opus.Encoder(48000, 2),
+      CharStream.create(text),
+      TextEncoder.create(),
+      AudioEncoder.create({
+        frequency: 700,
+        unitDuration: 0.12,
+        sampleRate: 48000
+      }),
+      new opus.Encoder(),
       oggEncoder.stream()
     );
   },
 
-  mp3(req, res) {
-    const { message } = req.params;
-
-    if (!message) {
-      return res.sendStatus(404);
-    }
-
-    const text = qs.unescape(message);
-
-    res.setHeader('Content-Type', 'audio/mpeg');
-
-    pump(
-      createAudioStream(text),
-      new lame.Encoder({ bitRate: 32 }),
-      res
-    );
-
-  },
-
-  mp3Url(message) {
-    return `${qs.escape(message)}.mp3`
-  },
-
-  oggUrl(message) {
-    return `${qs.escape(message)}.ogg`
+  encodeUrl(base, message) {
+    return `${base}/${qs.escape(message)}`;
   }
 };

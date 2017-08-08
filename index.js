@@ -9,15 +9,11 @@ const app = new Telegraf(BOT_TOKEN);
 const webHookPath = `/tb${uuid()}`;
 
 function getAudioUrl(message) {
-  return `${BOT_DOMAIN}/${audioController.mp3Url(message)}`;
-}
-
-function getVoiceUrl(message) {
-  return `${BOT_DOMAIN}/${audioController.oggUrl(message)}`;
+  return audioController.encodeUrl(BOT_DOMAIN, message);
 }
 
 app.on('text', ({ replyWithVoice, message }) => {
-  return replyWithVoice(getVoiceUrl(message.text));
+  return replyWithVoice(getAudioUrl(message.text));
 });
 
 app.on('inline_query', ({ inlineQuery, answerInlineQuery }) => {
@@ -36,8 +32,7 @@ app.telegram.getMe()
     const server = express();
     server.use(app.webhookCallback(webHookPath));
 
-    server.get('/:message.mp3', audioController.mp3);
-    server.get('/:message.ogg', audioController.ogg);
+    server.get('/:message', audioController.ogg);
 
     server.listen(PORT, () => {
       console.log(`Webhook mounted at ${BOT_DOMAIN}${webHookPath}`);
